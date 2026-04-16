@@ -45,3 +45,5 @@ INSERT INTO comments (content, post_id, author_id) VALUES
 ('Qué buen viaje!', 3, 1),
 ('Explica más sobre Express por favor', 4, 1),
 ('Buen contenido técnico', 4, 2);
+
+CREATE USER api_blog_user WITH PASSWORD 'api_blog_2026';
