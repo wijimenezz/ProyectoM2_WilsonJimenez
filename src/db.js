@@ -7,11 +7,3 @@ export const pool = new pg.Pool({
     database: process.env.DB_NAME,
     port: process.env.DB_PORT
 })
-
-pool.query("SELECT NOW()")
-  .then(res => {
-    console.log("✅ Conexión exitosa:", res.rows[0]);
-  })
-  .catch(err => {
-    console.error("❌ Error:", err);
-  });
