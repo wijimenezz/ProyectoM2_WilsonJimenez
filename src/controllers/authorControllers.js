@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+
 import { createAuthorService, deleteauthorService, getAllAuthorsService, updateAuthorService, } from "../Services/autorServices.js";
 
 export const getAuthors =  async (req , res) =>{

@@ -1,103 +1,91 @@
-import { pool } from "../db.js";
+import { createPostService, deletePostService, getAllPostsService, getPostByAuthorIdService } from "../Services/postsServices.js";
 
-export const getPosts =  async (req , res) =>{
+export const getPosts =  async (req , res, next) =>{
     try{
-    const { rows }= await pool.query("SELECT posts.*, authors.name FROM posts JOIN authors ON posts.author_id = authors.id");
-    res.json(rows)
+        const posts = await getAllPostsService ();
+        res.json(posts);
+    
     }
     catch (error){
-        console.error(error);
-        res.status(500).json({error: "Error al obtener posts"});
+        next(error);
     }
 
     
 };
 
-export const getPostById =async (req , res) =>{
-    const {id} = req.params;
+export const getPostById =async (req , res, next) =>{
+    
     try{
-        const { rows } = await pool.query('SELECT posts.*, authors.name FROM posts JOIN authors ON posts.author_id = authors.id WHERE posts.id= $1',[id]);
         
-        if (rows.length === 0){
-            return res.status(404).json({mensaje: "post no encontrado"});
-        }
-        res.json(rows[0]);
+        res.json(req.post);      
+        
+       
     }
    catch(error){
-    console.error(error);
-    res.status(500).json({error: "Error al obtener el post"})
+    next(error);
    }
 };
 
-export const getpostByAuthor =async (req , res) =>{
-    const {id} = req.params;
+export const getPostByAuthorID = async (req, res, next) =>{
     try{
-        const { rows } = await pool.query('SELECT * FROM posts WHERE id= $1',[id]);
-        
-        if (rows.length === 0){
-            return res.status(404).json({mensaje: "post no encontrado"});
-        }
-        res.json(rows[0]);
+        const {authorId} = req.params;
+    const posts = await getPostByAuthorIdService(authorId);
+    if (posts.length === 0){
+        return res.status(404).json({
+            mensaje: "No se encontraron posts para ese autor"
+        })
     }
-   catch(error){
-    console.error(error);
-    res.status(500).json({error: "Error al obtener el post"})
-   }
-};
-
-export const createAuthor =async (req , res) =>{
-    const datos = req.body;
-    try{
-         const { rows } = await pool.query("INSERT INTO authors (name, email, bio) VALUES ($1,$2,$3) RETURNING *", 
-            [datos.name, datos.email, datos.bio]
-         );
-         res.status(201).json({
-            mensaje: "Autor creado con exito",
-            data: rows[0]
-         
-         })
-            
+    res.status(200).json({
+        mensaje:"Los posts se encontraron exitosamente",
+        posts
+    })
     }
     catch(error){
-         console.error(error);
-        res.status(500).json({mensaje: "Error al Agregar un autor"});
+        next(error)
+
+    }
+}
+
+export const createPost =async (req , res, next) =>{
+    
+    try{
+        const newPost =  await createPostService(req.body);
+        res.status(201).json({mensaje: "Post Creado con exito",
+            newPost
+        } )
+    }
+            catch(error){
+         next(error)
     }
 };
 
-export const updateAuthor = async (req , res) =>{
-   const {id} = req.params;
-   const datos = req.body;
+export const updatePost = async (req , res, next) =>{
+   
   try{
-   const { rows } = await pool.query("UPDATE authors SET name = $1, email = $2, bio = $3 WHERE id = $4 RETURNING *", [datos.name, datos.email, datos.bio, id])
-
-   if (rows.length === 0) {
-    return res.status(404).json({mensaje: "autor no encontrado"});
+   const updated = await updatePostService(req.params.id, req.body);
+   res.json({mensaje: "Post Actualizado con Exito",
+    updated
+   })
     
-   };
-    res.json(rows[0]);
-
   }
+
   catch(error){
-    console.error(error);
-    res.status(500).json({mensaje: "error al actualizar author"})
+    next(error)
   }
 
 };
 
-export const deleteAuthor = async (req , res) =>{
-    const {id} = req.params;
+export const deletePost = async (req , res, next) =>{
+    
     try{
-       const result = await pool.query('DELETE FROM authors WHERE id = $1',[id]);
-       
-        if (result.rowCount === 0){
-            return res.status(404).json({mensaje: "autor no encontrado"});
-         }
-         res.json({mensaje:"autor eliminado existosamente"})
+        await deletePostService(req.params.id);
+        res.json({mensaje:"Post eliminado existosamente"})
                 
 
     }
     catch(error){
-        res.status(500).json({mensaje: "error al eliminar un autor"})
+        next(error)
+        
     }
     
 };

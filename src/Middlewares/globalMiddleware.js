@@ -18,6 +18,12 @@ export const errorHandler = (err, req, res, next) => {
 export const validateId = (req, res, next) => {
   const { id } = req.params;
 
+   if (!id) {
+    return res.status(400).json({
+      mensaje: "Debe enviar un id"
+    });
+  }
+
   if (!Number.isInteger(Number(id))) {
     return res.status(400).json({
       error: "ID inválido, debe ser un número entero",
