@@ -38,9 +38,9 @@ export const validateDataPost = (req, res, next) => {
 
 export const validatePostsbyAuthorId = (req, res, next) => {
 
-    const { authorId } = req.params;
+    const { id } = req.params;
 
-    if (!authorId || isNaN(Number(authorId))) {
+    if (!id || isNaN(Number(id))) {
         return res.status(400).json({ 
         
             mensaje: "El ID del autor es requerido y debe ser un número válido." 

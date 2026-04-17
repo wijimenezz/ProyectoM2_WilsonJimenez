@@ -37,3 +37,9 @@ export const deletePostService = async(id)=>{
      const result = await pool.query('DELETE FROM posts WHERE id = $1',[id]);
      return result.rowCount
 }
+
+export const publishPostService = async (postId) =>{
+    const { rows } = await pool.query("UPDATE posts SET published = true WHERE id = $1 RETURNING *", [postId]);
+    return (rows[0])  
+    
+}

@@ -1,4 +1,4 @@
-import { createPostService, deletePostService, getAllPostsService, getPostByAuthorIdService } from "../Services/postsServices.js";
+import { createPostService, deletePostService, getAllPostsService, getPostByAuthorIdService, publishPostService } from "../Services/postsServices.js";
 
 export const getPosts =  async (req , res, next) =>{
     try{
@@ -28,8 +28,8 @@ export const getPostById =async (req , res, next) =>{
 
 export const getPostByAuthorID = async (req, res, next) =>{
     try{
-        const {authorId} = req.params;
-    const posts = await getPostByAuthorIdService(authorId);
+        const {id} = req.params;
+    const posts = await getPostByAuthorIdService(id);
     if (posts.length === 0){
         return res.status(404).json({
             mensaje: "No se encontraron posts para ese autor"
@@ -89,3 +89,22 @@ export const deletePost = async (req , res, next) =>{
     }
     
 };
+
+export const publishPost = async (req , res, next) =>{
+
+    try{
+        const {id} = req.params;
+        const post = await publishPostService(id);
+        if (!post) {
+            return res.status(404).json({mensaje: "Post no encontrado"})   
+        }
+
+        res.status(200).json({mensaje: "Post Actualizado correctamente",
+            post
+        })
+    }
+    catch(error){
+        next(error);
+    }
+
+}
