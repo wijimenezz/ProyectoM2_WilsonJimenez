@@ -1,9 +1,8 @@
-import { getAllAuthorsService, getAuthorByIdService } from "../Services/autorServices.js";
+import { getAuthorByIdService } from "../Services/autorServices.js";
 
-export const validateAuthor =async (req , res, next) =>{
-
-        const author= await getAuthorByIdService(req.params.id);
-        if (!author) {
+export const validateAuthor = async (req, res, next) => {
+  const author = await getAuthorByIdService(req.params.id);
+  if (!author) {
     return res.status(404).json({ mensaje: "Autor no encontrado" });
   }
 
@@ -16,7 +15,7 @@ export const validateDataAuthor = (req, res, next) => {
 
   if (!name || name.trim().length < 3) {
     return res.status(400).json({
-      mensaje: "El nombre es obligatorio y debe tener al menos 3 caracteres"
+      mensaje: "El nombre es obligatorio y debe tener al menos 3 caracteres",
     });
   }
 
@@ -24,19 +23,15 @@ export const validateDataAuthor = (req, res, next) => {
 
   if (!email || !emailRegex.test(email)) {
     return res.status(400).json({
-      mensaje: "El email no es válido"
+      mensaje: "El email no es válido",
     });
   }
 
   if (!bio || bio.trim().length < 10) {
     return res.status(400).json({
-      mensaje: "La biografía debe tener al menos 10 caracteres"
+      mensaje: "La biografía debe tener al menos 10 caracteres",
     });
   }
 
   next();
 };
-
-
-        
-          
