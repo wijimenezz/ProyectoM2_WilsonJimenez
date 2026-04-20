@@ -33,7 +33,7 @@ export const createPostService = async (datos) => {
 
 export const updatePostService = async (id, datos) => {
   const { rows } = await pool.query(
-    "UPDATE posts SET tittle = $1, content = $2 WHERE id = $3 RETURNING *",
+    "UPDATE posts SET title = $1, content = $2 WHERE id = $3 RETURNING *",
     [datos.title, datos.content, id],
   );
   return rows[0];
