@@ -8,6 +8,8 @@ info:
 servers:
   - url: http://localhost:3000
     description: Servidor local
+  - url: proyectom2wilsonjimenez-production.up.railway.app
+    description: Producción
 
 tags:
   - name: Authors
