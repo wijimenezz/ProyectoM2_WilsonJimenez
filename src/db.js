@@ -1,9 +1,20 @@
-import pg, { Pool } from 'pg';
+import pg from "pg";
 
 export const pool = new pg.Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT
-})
+  connectionString: process.env.DATABASE_URL,
+  ssl:
+    process.env.NODE_ENV === "production"
+      ? { rejectUnauthorized: false }
+      : false,
+});
+
+pool.connect((err, client, release) => {
+  if (err) {
+    console.error("❌ Error conectando a DB:", err.message);
+  } else {
+    client.query("SELECT current_database()", (err, result) => {
+      release();
+      console.log("✅ Conectado a DB:", result.rows[0].current_database);
+    });
+  }
+});
