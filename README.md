@@ -6,15 +6,14 @@ REST API para gestión de un blog con autores, posts y comentarios. Permite crea
 
 ## URL DE REPOSITORIO EN GITHUB
 
+```
 https://github.com/wijimenezz/ProyectoM2_WilsonJimenez
+
+```
 
 ---
 
 ## URL de la API
-
-```
-https://proyectom2wilsonjimenez-production.up.railway.app/api
-```
 
 Documentación interactiva (Swagger UI):
 
