@@ -4,6 +4,7 @@ info:
   title: API Blog
   version: "1.0.0"
   description: Documentación de la API de authors, posts y comments
+  Github: https://github.com/wijimenezz
 
 servers:
   - url: http://localhost:3000
