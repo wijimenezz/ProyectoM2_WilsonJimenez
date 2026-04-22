@@ -1,3 +1,5 @@
+-- ------------------------ SETUP
+
 CREATE TABLE authors (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -26,6 +28,8 @@ CREATE TABLE comments (
     FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
     FOREIGN KEY (author_id) REFERENCES authors(id) ON DELETE CASCADE
 );
+
+------------------------- SEED 
 
 INSERT INTO authors (name, email, bio) VALUES
 ('Wilson', 'wilson@email.com', 'Apasionado por el running y la tecnología'),
